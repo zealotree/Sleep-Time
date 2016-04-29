@@ -10,7 +10,7 @@
     "resources": {
         "media": [
             {
-                "characterRegex": "[0-9:PM ]",
+                "characterRegex": "[0-9:APM ]",
                 "file": "fonts/Maax-boldMono.ttf",
                 "name": "MFONT_28",
                 "targetPlatforms": null,

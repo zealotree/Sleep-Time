@@ -8,13 +8,13 @@ char s_buffer[] = "00:00 PM";
 char date_buffer[] = "SUN APR 31";
 
 static void tick_handler(struct tm *tick_time, TimeUnits changed) {
-    strftime(s_buffer, sizeof(s_buffer), clock_is_24h_style() ?
+  
+  strftime(s_buffer, sizeof(s_buffer), clock_is_24h_style() ?
                                           "%H:%M" : "%I:%M %p", tick_time);
   strftime(date_buffer, sizeof(date_buffer), "%a %b %d", tick_time);
   
   text_layer_set_text(s_time_layer, s_buffer);  
   text_layer_set_text(s_date_layer, date_buffer);
-
 }
 
 static void main_window_load(Window *window) {
@@ -38,17 +38,17 @@ static void main_window_load(Window *window) {
   if (clock_is_24h_style()){
     s_time_layer = text_layer_create(
         GRect(0, PBL_IF_ROUND_ELSE(52, 44), 
-              PBL_IF_ROUND_ELSE(bounds.size.w + 5, bounds.size.w), 50));
+              PBL_IF_ROUND_ELSE(bounds.size.w, bounds.size.w), 50));
     s_date_layer = text_layer_create(
         GRect(0, PBL_IF_ROUND_ELSE(90, 84), 
-              PBL_IF_ROUND_ELSE(bounds.size.w + 5, bounds.size.w), 50));
+              PBL_IF_ROUND_ELSE(bounds.size.w, bounds.size.w), 50));
   } else {
     s_time_layer = text_layer_create(
       GRect(0, PBL_IF_ROUND_ELSE(61, 53), 
-            PBL_IF_ROUND_ELSE(bounds.size.w + 5, bounds.size.w), 50));
+            PBL_IF_ROUND_ELSE(bounds.size.w, bounds.size.w), 50));
     s_date_layer = text_layer_create(
       GRect(0, PBL_IF_ROUND_ELSE(89, 87), 
-            PBL_IF_ROUND_ELSE(bounds.size.w + 5, bounds.size.w), 50));
+            PBL_IF_ROUND_ELSE(bounds.size.w, bounds.size.w), 50));
   }
 
   text_layer_set_background_color(s_time_layer, GColorClear);
@@ -83,13 +83,6 @@ static void main_window_unload_agents() {
   tick_timer_service_unsubscribe();
 }
 
-static void empty_window_load(Window *window) {
-  window_set_background_color(empty_window, GColorBlack);
-}
-
-static void empty_window_unload(Window *window) {
-}
-
 static void switch_to_empty_window() {
   window_stack_push(empty_window, false);
 }
@@ -100,7 +93,9 @@ static void switch_to_main_window() {
 
 static void main_window_load_agents() {
   tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
-  AppTimer *updateTimer = app_timer_register(10000, (AppTimerCallback) switch_to_empty_window, NULL);
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Switching back to empty in 10 seconds");
+  AppTimer *updateTimer = app_timer_register(10000, 
+          (AppTimerCallback) switch_to_empty_window, NULL);
 }
 
 static void accel_tap_handler(AccelAxisType axis, int32_t direction) {
@@ -120,9 +115,11 @@ void handle_init(void) {
   empty_window = window_create();
 
   window_set_window_handlers(empty_window, (WindowHandlers) {
-    .load = empty_window_load,
-    .unload = empty_window_unload,
+    .load = 0,
+    .unload = 0,
   });
+  
+  window_set_background_color(empty_window, GColorBlack);
   
   switch_to_empty_window();
   accel_tap_service_subscribe(accel_tap_handler);
