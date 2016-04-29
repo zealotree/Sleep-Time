@@ -13,7 +13,7 @@ static void update_time() {
   struct tm *tick_time = localtime(&temp);
 
   strftime(s_buffer, sizeof(s_buffer), clock_is_24h_style() ?
-                                          "%H:%M" : "%I:%M", tick_time);
+                                          "%H%M" : "%I%M", tick_time);
   strftime(date_buffer, sizeof(date_buffer), "%a %b %d", tick_time);
   
   text_layer_set_text(s_time_layer, s_buffer);  
