@@ -7,14 +7,20 @@ static GFont time_font, date_font;
 char s_buffer[] = "00:00";
 char date_buffer[] = "SUN APR 31";
 
-static void tick_handler(struct tm *tick_time, TimeUnits changed) {
-  
+static void update_time() {
+
   strftime(s_buffer, sizeof(s_buffer), clock_is_24h_style() ?
                                           "%H:%M" : "%I:%M", tick_time);
   strftime(date_buffer, sizeof(date_buffer), "%a %b %d", tick_time);
   
   text_layer_set_text(s_time_layer, s_buffer);  
   text_layer_set_text(s_date_layer, date_buffer);
+}
+
+static void tick_handler(struct tm *tick_time, TimeUnits changed) {
+
+  update_time();
+  
 }
 
 static void main_window_load(Window *window) {
@@ -52,6 +58,8 @@ static void main_window_load(Window *window) {
 
   layer_add_child(window_layer, text_layer_get_layer(s_time_layer));
   layer_add_child(window_layer, text_layer_get_layer(s_date_layer));
+
+  update_time();
 
 }
 
