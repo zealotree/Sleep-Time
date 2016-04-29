@@ -9,14 +9,7 @@
     "projectType": "native",
     "resources": {
         "media": [
-            {
-                "characterRegex": "[0-9:APM ]",
-                "file": "fonts/Maax-boldMono.ttf",
-                "name": "MFONT_28",
-                "targetPlatforms": null,
-                "type": "font"
-            },
-            {
+           {
                 "characterRegex": "[0-9:]",
                 "file": "fonts/Maax-boldMono.ttf",
                 "name": "MFONT_38",
@@ -40,7 +33,7 @@
         "chalk"
     ],
     "uuid": "1dc8ff78-d3d1-4561-8f88-029ee42a8b70",
-    "versionLabel": "1",
+    "versionLabel": "1.04",
     "watchapp": {
         "watchface": true
     }

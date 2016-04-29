@@ -4,13 +4,13 @@
 Window *main_window, *empty_window;
 static TextLayer *s_time_layer, *s_date_layer;
 static GFont time_font, date_font;
-char s_buffer[] = "00:00 PM";
+char s_buffer[] = "00:00";
 char date_buffer[] = "SUN APR 31";
 
 static void tick_handler(struct tm *tick_time, TimeUnits changed) {
   
   strftime(s_buffer, sizeof(s_buffer), clock_is_24h_style() ?
-                                          "%H:%M" : "%I:%M %p", tick_time);
+                                          "%H:%M" : "%I:%M", tick_time);
   strftime(date_buffer, sizeof(date_buffer), "%a %b %d", tick_time);
   
   text_layer_set_text(s_time_layer, s_buffer);  
@@ -24,32 +24,18 @@ static void main_window_load(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
   GRect bounds = layer_get_bounds(window_layer);
   
-  if (clock_is_24h_style()){
-    time_font = fonts_load_custom_font(
+  time_font = fonts_load_custom_font(
                         resource_get_handle(RESOURCE_ID_MFONT_38));
-  } else {
-    time_font = fonts_load_custom_font(
-                        resource_get_handle(RESOURCE_ID_MFONT_28));
-  }
   
   date_font = fonts_load_custom_font(
                         resource_get_handle(RESOURCE_ID_MFONT_18));
 
-  if (clock_is_24h_style()){
-    s_time_layer = text_layer_create(
+  s_time_layer = text_layer_create(
         GRect(0, PBL_IF_ROUND_ELSE(52, 44), 
-              PBL_IF_ROUND_ELSE(bounds.size.w, bounds.size.w), 50));
-    s_date_layer = text_layer_create(
+                PBL_IF_ROUND_ELSE(bounds.size.w, bounds.size.w), 50));
+  s_date_layer = text_layer_create(
         GRect(0, PBL_IF_ROUND_ELSE(90, 84), 
-              PBL_IF_ROUND_ELSE(bounds.size.w, bounds.size.w), 50));
-  } else {
-    s_time_layer = text_layer_create(
-      GRect(0, PBL_IF_ROUND_ELSE(61, 53), 
-            PBL_IF_ROUND_ELSE(bounds.size.w, bounds.size.w), 50));
-    s_date_layer = text_layer_create(
-      GRect(0, PBL_IF_ROUND_ELSE(89, 87), 
-            PBL_IF_ROUND_ELSE(bounds.size.w, bounds.size.w), 50));
-  }
+                PBL_IF_ROUND_ELSE(bounds.size.w, bounds.size.w), 50));
 
   text_layer_set_background_color(s_time_layer, GColorClear);
   text_layer_set_text_color(s_time_layer, GColorWhite);
@@ -66,7 +52,7 @@ static void main_window_load(Window *window) {
 
   layer_add_child(window_layer, text_layer_get_layer(s_time_layer));
   layer_add_child(window_layer, text_layer_get_layer(s_date_layer));
-  
+
 }
 
 static void main_window_unload(Window *window) {
