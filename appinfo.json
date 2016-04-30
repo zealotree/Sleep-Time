@@ -3,9 +3,9 @@
     "capabilities": [
         ""
     ],
-    "companyName": "Zyal",
+    "companyName": "Zealotree",
     "enableMultiJS": false,
-    "longName": "Sleepy Time",
+    "longName": "SleepyTime",
     "projectType": "native",
     "resources": {
         "media": [
@@ -17,7 +17,7 @@
                 "type": "font"
             },
             {
-                "characterRegex": "[0-9:A-Za-z ]",
+                "characterRegex": "[0-9A-Za-z ]",
                 "file": "fonts/Maax-boldMono.ttf",
                 "name": "MFONT_18",
                 "targetPlatforms": null,
@@ -26,13 +26,13 @@
         ]
     },
     "sdkVersion": "3",
-    "shortName": "Sleepy Time",
+    "shortName": "SleepyTime",
     "targetPlatforms": [
         "aplite",
         "basalt",
         "chalk"
     ],
-    "uuid": "1dc8ff78-d3d1-4561-8f88-029ee42a8b70",
+    "uuid": "58e2c616-0d6a-4a59-80e0-b30e008affd2",
     "versionLabel": "1",
     "watchapp": {
         "watchface": true

@@ -1,5 +1,4 @@
 #include <pebble.h>
-#include <ctype.h>
 
 Window *main_window, *empty_window;
 static TextLayer *s_time_layer, *s_date_layer;
