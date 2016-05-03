@@ -20,9 +20,7 @@ static void update_time() {
 }
 
 static void tick_handler(struct tm *tick_time, TimeUnits changed) {
-
   update_time();
-  
 }
 
 static void main_window_load(Window *window) {
@@ -66,7 +64,6 @@ static void main_window_load(Window *window) {
 }
 
 static void main_window_unload(Window *window) {
-  window_destroy(main_window);
   text_layer_destroy(s_time_layer);
   text_layer_destroy(s_date_layer);
   fonts_unload_custom_font(time_font);
@@ -79,19 +76,12 @@ static void main_window_unload_agents() {
   tick_timer_service_unsubscribe();
 }
 
-static void switch_to_empty_window() {
-  window_stack_push(empty_window, false);
-}
-
 static void switch_to_main_window() {
   window_stack_push(main_window, false);
 }
 
 static void main_window_load_agents() {
   tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "Switching back to empty in 10 seconds");
-  AppTimer *updateTimer = app_timer_register(10000, 
-          (AppTimerCallback) switch_to_empty_window, NULL);
 }
 
 static void accel_tap_handler(AccelAxisType axis, int32_t direction) {
@@ -108,22 +98,11 @@ void handle_init(void) {
     .unload = main_window_unload
   });
   
-  empty_window = window_create();
-
-  window_set_window_handlers(empty_window, (WindowHandlers) {
-    .load = 0,
-    .unload = 0,
-  });
-  
-  window_set_background_color(empty_window, GColorBlack);
-  
-  switch_to_empty_window();
-  accel_tap_service_subscribe(accel_tap_handler);
+  switch_to_main_window();
 }
 
 void handle_deinit(void) {
-  accel_tap_service_unsubscribe();
-  window_destroy(empty_window);
+  window_destroy(main_window);
 }
 
 int main(void) {

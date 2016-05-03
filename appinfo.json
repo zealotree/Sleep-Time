@@ -5,7 +5,7 @@
     ],
     "companyName": "Zealotree",
     "enableMultiJS": false,
-    "longName": "SleepyTime",
+    "longName": "SleepyOnTime",
     "projectType": "native",
     "resources": {
         "media": [
@@ -26,13 +26,13 @@
         ]
     },
     "sdkVersion": "3",
-    "shortName": "SleepyTime",
+    "shortName": "SleepyOnTime",
     "targetPlatforms": [
         "aplite",
         "basalt",
         "chalk"
     ],
-    "uuid": "58e2c616-0d6a-4a59-80e0-b30e008affd2",
+    "uuid": "ad06d05b-dfcb-4a60-bf54-7798716ce5a3",
     "versionLabel": "1.01",
     "watchapp": {
         "watchface": true
