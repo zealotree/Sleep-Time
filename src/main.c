@@ -33,16 +33,16 @@ static void main_window_load(Window *window) {
   GRect bounds = layer_get_bounds(window_layer);
   
   time_font = fonts_load_custom_font(
-                        resource_get_handle(RESOURCE_ID_MFONT_38));
+                        resource_get_handle(RESOURCE_ID_MFONT_46));
   
   date_font = fonts_load_custom_font(
                         resource_get_handle(RESOURCE_ID_MFONT_18));
 
   s_time_layer = text_layer_create(
-        GRect(0, PBL_IF_ROUND_ELSE(52, 44), 
+        GRect(0, PBL_IF_ROUND_ELSE(48, 44), 
                 PBL_IF_ROUND_ELSE(bounds.size.w, bounds.size.w), 50));
   s_date_layer = text_layer_create(
-        GRect(0, PBL_IF_ROUND_ELSE(90, 84), 
+        GRect(0, PBL_IF_ROUND_ELSE(95, 89), 
                 PBL_IF_ROUND_ELSE(bounds.size.w, bounds.size.w), 50));
 
   text_layer_set_background_color(s_time_layer, GColorClear);

@@ -12,7 +12,7 @@
            {
                 "characterRegex": "[0-9:]",
                 "file": "fonts/Maax-boldMono.ttf",
-                "name": "MFONT_38",
+                "name": "MFONT_46",
                 "targetPlatforms": null,
                 "type": "font"
             },
@@ -33,7 +33,7 @@
         "chalk"
     ],
     "uuid": "58e2c616-0d6a-4a59-80e0-b30e008affd2",
-    "versionLabel": "1",
+    "versionLabel": "1.01",
     "watchapp": {
         "watchface": true
     }
