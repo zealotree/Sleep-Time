@@ -27,16 +27,22 @@ static void main_window_load(Window *window) {
   GRect bounds = layer_get_bounds(window_layer);
   
   time_font = fonts_load_custom_font(
-                        resource_get_handle(RESOURCE_ID_MFONT_52));
+                        PBL_IF_ROUND_ELSE(
+                        	resource_get_handle(RESOURCE_ID_MFONT_64),
+                        	resource_get_handle(RESOURCE_ID_MFONT_52)
+                        ));
   
   date_font = fonts_load_custom_font(
-                        resource_get_handle(RESOURCE_ID_MFONT_20));
+                        PBL_IF_ROUND_ELSE(
+                        	resource_get_handle(RESOURCE_ID_MFONT_24),
+                        	resource_get_handle(RESOURCE_ID_MFONT_20)
+                        ));
 
   s_time_layer = text_layer_create(
-        GRect(0, PBL_IF_ROUND_ELSE(48, 40), 
-                PBL_IF_ROUND_ELSE(bounds.size.w, bounds.size.w), 55));
+        GRect(0, PBL_IF_ROUND_ELSE(31, 40), 
+                PBL_IF_ROUND_ELSE(bounds.size.w, bounds.size.w), 67));
   s_date_layer = text_layer_create(
-        GRect(0, PBL_IF_ROUND_ELSE(100, 94), 
+        GRect(0, PBL_IF_ROUND_ELSE(94, 94), 
                 PBL_IF_ROUND_ELSE(bounds.size.w, bounds.size.w), 35));
 
   text_layer_set_background_color(s_time_layer, GColorClear);

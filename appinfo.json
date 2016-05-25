@@ -12,7 +12,21 @@
            {
                 "characterRegex": "[0-9:]",
                 "file": "fonts/Maax-boldMono.ttf",
+                "name": "MFONT_64",
+                "targetPlatforms": null,
+                "type": "font"
+            },
+            {
+                "characterRegex": "[0-9:]",
+                "file": "fonts/Maax-boldMono.ttf",
                 "name": "MFONT_52",
+                "targetPlatforms": null,
+                "type": "font"
+            },
+            {
+                "characterRegex": "[0-9A-Za-z ]",
+                "file": "fonts/Maax-boldMono.ttf",
+                "name": "MFONT_24",
                 "targetPlatforms": null,
                 "type": "font"
             },
