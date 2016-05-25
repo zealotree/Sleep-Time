@@ -28,22 +28,22 @@ static void main_window_load(Window *window) {
   
   time_font = fonts_load_custom_font(
                         PBL_IF_ROUND_ELSE(
-                        	resource_get_handle(RESOURCE_ID_MFONT_64),
+                        	resource_get_handle(RESOURCE_ID_MFONT_58),
                         	resource_get_handle(RESOURCE_ID_MFONT_52)
                         ));
   
   date_font = fonts_load_custom_font(
                         PBL_IF_ROUND_ELSE(
-                        	resource_get_handle(RESOURCE_ID_MFONT_24),
+                        	resource_get_handle(RESOURCE_ID_MFONT_22),
                         	resource_get_handle(RESOURCE_ID_MFONT_20)
                         ));
 
   s_time_layer = text_layer_create(
-        GRect(0, PBL_IF_ROUND_ELSE(31, 40), 
-                PBL_IF_ROUND_ELSE(bounds.size.w, bounds.size.w), 67));
+        GRect(0, PBL_IF_ROUND_ELSE(38, 40), 
+                PBL_IF_ROUND_ELSE(bounds.size.w, bounds.size.w), 61));
   s_date_layer = text_layer_create(
-        GRect(0, PBL_IF_ROUND_ELSE(94, 94), 
-                PBL_IF_ROUND_ELSE(bounds.size.w, bounds.size.w), 35));
+        GRect(0, PBL_IF_ROUND_ELSE(98, 94), 
+                PBL_IF_ROUND_ELSE(bounds.size.w, bounds.size.w), 26));
 
   text_layer_set_background_color(s_time_layer, GColorClear);
   text_layer_set_text_color(s_time_layer, GColorWhite);
