@@ -19,12 +19,6 @@ static void update_time() {
   text_layer_set_text(s_date_layer, date_buffer);
 }
 
-static void tick_handler(struct tm *tick_time, TimeUnits changed) {
-
-  update_time();
-  
-}
-
 static void main_window_load(Window *window) {
   // Get information about the Window
   window_set_background_color(main_window, GColorBlack);
@@ -33,17 +27,17 @@ static void main_window_load(Window *window) {
   GRect bounds = layer_get_bounds(window_layer);
   
   time_font = fonts_load_custom_font(
-                        resource_get_handle(RESOURCE_ID_MFONT_46));
+                        resource_get_handle(RESOURCE_ID_MFONT_52));
   
   date_font = fonts_load_custom_font(
-                        resource_get_handle(RESOURCE_ID_MFONT_18));
+                        resource_get_handle(RESOURCE_ID_MFONT_20));
 
   s_time_layer = text_layer_create(
-        GRect(0, PBL_IF_ROUND_ELSE(48, 44), 
-                PBL_IF_ROUND_ELSE(bounds.size.w, bounds.size.w), 50));
+        GRect(0, PBL_IF_ROUND_ELSE(38, 30), 
+                PBL_IF_ROUND_ELSE(bounds.size.w, bounds.size.w), 55));
   s_date_layer = text_layer_create(
-        GRect(0, PBL_IF_ROUND_ELSE(95, 89), 
-                PBL_IF_ROUND_ELSE(bounds.size.w, bounds.size.w), 50));
+        GRect(0, PBL_IF_ROUND_ELSE(90, 84), 
+                PBL_IF_ROUND_ELSE(bounds.size.w, bounds.size.w), 35));
 
   text_layer_set_background_color(s_time_layer, GColorClear);
   text_layer_set_text_color(s_time_layer, GColorWhite);
@@ -61,8 +55,8 @@ static void main_window_load(Window *window) {
   layer_add_child(window_layer, text_layer_get_layer(s_time_layer));
   layer_add_child(window_layer, text_layer_get_layer(s_date_layer));
 
-  update_time();
-
+  layer_set_hidden(text_layer_get_layer(s_time_layer), true);
+  layer_set_hidden(text_layer_get_layer(s_date_layer), true);
 }
 
 static void main_window_unload(Window *window) {
@@ -73,57 +67,36 @@ static void main_window_unload(Window *window) {
   fonts_unload_custom_font(date_font);
 }
 
-
-
-static void main_window_unload_agents() {
-  tick_timer_service_unsubscribe();
-}
-
-static void switch_to_empty_window() {
-  window_stack_push(empty_window, false);
-}
-
-static void switch_to_main_window() {
-  window_stack_push(main_window, false);
-}
-
-static void main_window_load_agents() {
-  tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "Switching back to empty in 10 seconds");
-  AppTimer *updateTimer = app_timer_register(10000, 
-          (AppTimerCallback) switch_to_empty_window, NULL);
+static void hide_elements() {
+  layer_set_hidden(text_layer_get_layer(s_time_layer), true);
+  layer_set_hidden(text_layer_get_layer(s_date_layer), true);
 }
 
 static void accel_tap_handler(AccelAxisType axis, int32_t direction) {
-  switch_to_main_window();
+  update_time();
+  layer_set_hidden(text_layer_get_layer(s_time_layer), false);
+  layer_set_hidden(text_layer_get_layer(s_date_layer), false);
+   APP_LOG(APP_LOG_LEVEL_DEBUG, "Switching back to empty in 10 seconds");
+  AppTimer *updateTimer = app_timer_register(10000, 
+          (AppTimerCallback) hide_elements, NULL);
 }
 
 void handle_init(void) {
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Hello");
   main_window = window_create();
   
   window_set_window_handlers(main_window, (WindowHandlers) {
     .load = main_window_load,
-    .appear = main_window_load_agents,
-    .disappear = main_window_unload_agents,
     .unload = main_window_unload
   });
   
-  empty_window = window_create();
-
-  window_set_window_handlers(empty_window, (WindowHandlers) {
-    .load = 0,
-    .unload = 0,
-  });
-  
-  window_set_background_color(empty_window, GColorBlack);
-  
-  switch_to_empty_window();
+  window_set_background_color(main_window, GColorBlack);
+  window_stack_push(main_window, false);
   accel_tap_service_subscribe(accel_tap_handler);
 }
 
 void handle_deinit(void) {
   accel_tap_service_unsubscribe();
-  window_destroy(empty_window);
 }
 
 int main(void) {
