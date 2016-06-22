@@ -12,7 +12,7 @@ static void update_time() {
   struct tm *tick_time = localtime(&temp);
 
   strftime(s_buffer, sizeof(s_buffer), clock_is_24h_style() ?
-                                          "%H%M" : "%I%M", tick_time);
+                                          "%H%M" : "%I:%M", tick_time);
   strftime(date_buffer, sizeof(date_buffer), "%a %b %d", tick_time);
   
   text_layer_set_text(s_time_layer, s_buffer);  
@@ -51,7 +51,7 @@ static void main_window_load(Window *window) {
   text_layer_set_text_color(s_time_layer, GColorWhite);
   
   text_layer_set_background_color(s_date_layer, GColorClear);
-  text_layer_set_text_color(s_date_layer, PBL_IF_COLOR_ELSE(GColorDarkGray, GColorWhite));
+  text_layer_set_text_color(s_date_layer, PBL_IF_COLOR_ELSE(GColorWhite, GColorWhite));
 //   text_layer_set_text(s_date_layer, "Sun Apr 31");
   text_layer_set_font(s_date_layer, date_font);
   text_layer_set_text_alignment(s_date_layer, GTextAlignmentCenter);
