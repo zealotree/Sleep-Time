@@ -31,10 +31,10 @@ static void main_window_load(Window *window) {
   GRect bounds = layer_get_bounds(window_layer);
   
   time_font = fonts_load_custom_font(
-                        resource_get_handle(RESOURCE_ID_MFONT_46));
+                        resource_get_handle(RESOURCE_ID_MFONT_48));
   
   date_font = fonts_load_custom_font(
-                        resource_get_handle(RESOURCE_ID_MFONT_18));
+                        resource_get_handle(RESOURCE_ID_MFONT_20));
 
   s_time_layer = text_layer_create(
         GRect(0, PBL_IF_ROUND_ELSE(48, 44), 
