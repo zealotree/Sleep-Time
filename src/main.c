@@ -29,7 +29,7 @@ static void main_window_load(Window *window) {
   time_font = fonts_load_custom_font(
                         PBL_IF_ROUND_ELSE(
                         	resource_get_handle(RESOURCE_ID_MFONT_58),
-                        	resource_get_handle(RESOURCE_ID_MFONT_52)
+                        	resource_get_handle(RESOURCE_ID_MFONT_48)
                         ));
   
   date_font = fonts_load_custom_font(
