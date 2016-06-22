@@ -28,7 +28,7 @@ static void main_window_load(Window *window) {
   
   time_font = fonts_load_custom_font(
                         PBL_IF_ROUND_ELSE(
-                        	resource_get_handle(RESOURCE_ID_MFONT_52),
+                        	resource_get_handle(RESOURCE_ID_MFONT_54),
                         	resource_get_handle(RESOURCE_ID_MFONT_48)
                         ));
   
@@ -39,7 +39,7 @@ static void main_window_load(Window *window) {
                         ));
 
   s_time_layer = text_layer_create(
-        GRect(0, PBL_IF_ROUND_ELSE(38, 40), 
+        GRect(0, PBL_IF_ROUND_ELSE(42, 40), 
                 PBL_IF_ROUND_ELSE(bounds.size.w, bounds.size.w), 61));
   s_date_layer = text_layer_create(
         GRect(0, PBL_IF_ROUND_ELSE(98, 94), 
