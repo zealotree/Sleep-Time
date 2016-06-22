@@ -71,7 +71,6 @@ static void main_window_unload(Window *window) {
 }
 
 
-
 static void main_window_unload_agents() {
   tick_timer_service_unsubscribe();
 }
@@ -84,9 +83,6 @@ static void main_window_load_agents() {
   tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
 }
 
-static void accel_tap_handler(AccelAxisType axis, int32_t direction) {
-  switch_to_main_window();
-}
 
 void handle_init(void) {
   main_window = window_create();
