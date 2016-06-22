@@ -1,0 +1,49 @@
+{
+  "version": "1.01.0",
+  "author": "Zealotree",
+  "private": true,
+  "dependencies": {},
+  "keywords": [
+    "pebble-app"
+  ],
+  "pebble": {
+    "sdkVersion": "3",
+    "resources": {
+      "media": [
+        {
+          "type": "font",
+          "targetPlatforms": null,
+          "characterRegex": "[0-9:]",
+          "name": "MFONT_46",
+          "file": "fonts/Maax-boldMono.ttf"
+        },
+        {
+          "type": "font",
+          "targetPlatforms": null,
+          "characterRegex": "[0-9A-Za-z ]",
+          "name": "MFONT_18",
+          "file": "fonts/Maax-boldMono.ttf"
+        }
+      ]
+    },
+    "projectType": "native",
+    "uuid": "ad06d05b-dfcb-4a60-bf54-7798716ce5a3",
+    "messageKeys": {},
+    "enableMultiJS": false,
+    "displayName": "SleepyOnTime",
+    "watchapp": {
+      "onlyShownOnCommunication": false,
+      "hiddenApp": false,
+      "watchface": true
+    },
+    "targetPlatforms": [
+      "aplite",
+      "basalt",
+      "chalk"
+    ],
+    "capabilities": [
+      ""
+    ]
+  },
+  "name": "SleepyOnTime"
+}
