@@ -103,17 +103,17 @@ static void canvas_update_proc(Layer *layer, GContext *ctx) {
   BatteryChargeState state = battery_state_service_peek();
 
   if (state.charge_percent <= 20) {
-    graphics_context_set_fill_color(ctx, GColorRed);    
-    graphics_context_set_fill_color(ctx, GColorRed);
+    graphics_context_set_fill_color(ctx, PBL_IF_COLOR_ELSE(GColorRed, GColorWhite));    
+    graphics_context_set_fill_color(ctx, PBL_IF_COLOR_ELSE(GColorRed, GColorWhite));    
   } else if (state.charge_percent > 20 && state.charge_percent <= 40) {
-    graphics_context_set_fill_color(ctx, GColorBulgarianRose);    
-    graphics_context_set_fill_color(ctx, GColorBulgarianRose);
+    graphics_context_set_fill_color(ctx, PBL_IF_COLOR_ELSE(GColorMelon, GColorWhite));    
+    graphics_context_set_fill_color(ctx, PBL_IF_COLOR_ELSE(GColorMelon, GColorWhite));    
   } else if (state.charge_percent > 40 && state.charge_percent <= 70) {
-    graphics_context_set_fill_color(ctx, GColorYellow);    
-    graphics_context_set_fill_color(ctx, GColorYellow);
+    graphics_context_set_fill_color(ctx, PBL_IF_COLOR_ELSE(GColorYellow, GColorWhite));    
+    graphics_context_set_fill_color(ctx, PBL_IF_COLOR_ELSE(GColorYellow, GColorWhite));
   } else if (state.charge_percent > 70 && state.charge_percent <= 100) {
-    graphics_context_set_fill_color(ctx, GColorDarkGreen);    
-    graphics_context_set_fill_color(ctx, GColorDarkGreen);    
+    graphics_context_set_fill_color(ctx, PBL_IF_COLOR_ELSE(GColorMediumAquamarine, GColorWhite));    
+    graphics_context_set_fill_color(ctx, PBL_IF_COLOR_ELSE(GColorMediumAquamarine, GColorWhite));    
   }
 
 
@@ -138,7 +138,7 @@ static void canvas_update_proc(Layer *layer, GContext *ctx) {
 
 static void main_window_load(Window *window) {
   // Get information about the Window
-  window_set_background_color(main_window, PBL_IF_COLOR_ELSE(GColorElectricBlue, GColorBlack));
+  window_set_background_color(main_window, PBL_IF_COLOR_ELSE(GColorBlack, GColorBlack));
   
   Layer *window_layer = window_get_root_layer(window);
   GRect bounds = layer_get_bounds(window_layer);
@@ -184,22 +184,22 @@ static void main_window_load(Window *window) {
   text_layer_set_background_color(s_time_layer, GColorClear);
   text_layer_set_font(s_time_layer, time_font);
   text_layer_set_text_alignment(s_time_layer, GTextAlignmentCenter);
-  text_layer_set_text_color(s_time_layer, PBL_IF_COLOR_ELSE(GColorBlack, GColorWhite));
+  text_layer_set_text_color(s_time_layer, PBL_IF_COLOR_ELSE(GColorWhite, GColorWhite));
   
   text_layer_set_background_color(s_date_layer, GColorClear);
-  text_layer_set_text_color(s_date_layer, PBL_IF_COLOR_ELSE(GColorDarkCandyAppleRed, GColorWhite));
+  text_layer_set_text_color(s_date_layer, PBL_IF_COLOR_ELSE(GColorWhite, GColorWhite));
 //   text_layer_set_text(s_date_layer, "Sun Apr 31");
   text_layer_set_font(s_date_layer, date_font);
   text_layer_set_text_alignment(s_date_layer, GTextAlignmentCenter);
 
   text_layer_set_background_color(s_day_layer, GColorClear);
-  text_layer_set_text_color(s_day_layer, PBL_IF_COLOR_ELSE(GColorDarkCandyAppleRed, GColorWhite));
+  text_layer_set_text_color(s_day_layer, PBL_IF_COLOR_ELSE(GColorWhite, GColorWhite));
 //   text_layer_set_text(s_date_layer, "Sun Apr 31");
   text_layer_set_font(s_day_layer, date_font);
   text_layer_set_text_alignment(s_day_layer, GTextAlignmentCenter);
 
   text_layer_set_background_color(ap_layer, GColorClear);
-  text_layer_set_text_color(ap_layer, PBL_IF_COLOR_ELSE(GColorDarkCandyAppleRed, GColorWhite));
+  text_layer_set_text_color(ap_layer, PBL_IF_COLOR_ELSE(GColorWhite, GColorWhite));
   text_layer_set_font(ap_layer, date_font);
   text_layer_set_text_alignment(ap_layer, GTextAlignmentCenter);
 
