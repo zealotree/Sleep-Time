@@ -15,14 +15,14 @@
           "targetPlatforms": null,
           "characterRegex": "[0-9:]",
           "name": "MFONT_66",
-          "file": "fonts/ArchivoNarrow-Bold.ttf"
+          "file": "fonts/Swiss 721 Narrow Bold SWA.ttf"
         },
         {
           "type": "font",
           "targetPlatforms": null,
           "characterRegex": "[0-9:]",
           "name": "MFONT_62",
-          "file": "fonts/ArchivoNarrow-Bold.ttf"
+          "file": "fonts/Swiss 721 Narrow Bold SWA.ttf"
         },
         {
           "type": "font",
