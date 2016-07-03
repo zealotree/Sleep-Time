@@ -14,7 +14,7 @@
           "type": "font",
           "targetPlatforms": null,
           "characterRegex": "[0-9:]",
-          "name": "MFONT_68",
+          "name": "MFONT_66",
           "file": "fonts/ArchivoNarrow-Bold.ttf"
         },
         {
@@ -36,6 +36,13 @@
           "targetPlatforms": null,
           "characterRegex": "[0-9A-Za-z ]",
           "name": "MFONT_20",
+          "file": "fonts/Maax-Medium.ttf"
+        },
+        {
+          "type": "font",
+          "targetPlatforms": null,
+          "characterRegex": "[0-9A-Za-z ]",
+          "name": "MFONT_18",
           "file": "fonts/Maax-Medium.ttf"
         }
       ]
