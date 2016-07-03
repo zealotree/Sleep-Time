@@ -14,15 +14,15 @@
           "type": "font",
           "targetPlatforms": null,
           "characterRegex": "[0-9:]",
-          "name": "MFONT_54",
-          "file": "fonts/Maax-Round-Bold.ttf"
+          "name": "MFONT_68",
+          "file": "fonts/ArchivoNarrow-Bold.ttf"
         },
         {
           "type": "font",
           "targetPlatforms": null,
           "characterRegex": "[0-9:]",
-          "name": "MFONT_48",
-          "file": "fonts/Maax-Round-Bold.ttf"
+          "name": "MFONT_62",
+          "file": "fonts/ArchivoNarrow-Bold.ttf"
         },
         {
           "type": "font",
