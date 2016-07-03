@@ -13,18 +13,18 @@ static void update_time() {
   struct tm *tick_time = localtime(&temp);
 
   strftime(s_buffer, sizeof(s_buffer), clock_is_24h_style() ?
-                                          "%H:%M" : "%I:%M", tick_time);
-                                          //"%k:%M" : "%l:%M", tick_time);
+                                          // "%H:%M" : "%I:%M", tick_time);
+                                          "%k:%M" : "%l:%M", tick_time);
   strftime(date_buffer, sizeof(date_buffer), "%B %d", tick_time);
 
   strftime(day_buffer, sizeof(day_buffer), clock_is_24h_style() ?"%A" : "%A", tick_time);
   
   if (clock_is_24h_style()) {
-  	text_layer_set_text(s_time_layer, "23:59");
-  	//text_layer_set_text(s_time_layer, s_buffer+((' ' == s_buffer[0])?1:0));
+  	// text_layer_set_text(s_time_layer, "23:59");
+  	text_layer_set_text(s_time_layer, s_buffer+((' ' == s_buffer[0])?1:0));
   } else {
-  	text_layer_set_text(s_time_layer, "23:59");
-  	//text_layer_set_text(s_time_layer, s_buffer+((' ' == s_buffer[0])?1:0));
+  	// text_layer_set_text(s_time_layer, "23:59");
+  	text_layer_set_text(s_time_layer, s_buffer+((' ' == s_buffer[0])?1:0));
   }
   text_layer_set_text(s_date_layer, date_buffer);
   text_layer_set_text(s_day_layer, day_buffer);
