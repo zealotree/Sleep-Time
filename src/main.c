@@ -117,17 +117,7 @@ static void canvas_update_proc(Layer *layer, GContext *ctx) {
   }
 
 
-  if (state.charge_percent == 25) {
-    angle_end = DEG_TO_TRIGANGLE(90);
-  } else if (state.charge_percent == 50) {
-    angle_end = DEG_TO_TRIGANGLE(180);
-  } else if (state.charge_percent == 70) {
-    angle_end = DEG_TO_TRIGANGLE(270);
-  } else if (state.charge_percent == 100) {
-    angle_end = DEG_TO_TRIGANGLE(360);
-  } else {
-    angle_end = DEG_TO_TRIGANGLE(state.charge_percent * (360/100));
-  }
+  int32_t angle_end = DEG_TO_TRIGANGLE((360/10 * state.charge_percent)/10);
   graphics_fill_radial(ctx, rect_bounds, GOvalScaleModeFitCircle, 7, angle_start, 
                                                                     angle_end);
 
