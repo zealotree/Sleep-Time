@@ -20,22 +20,8 @@
         {
           "type": "font",
           "targetPlatforms": null,
-          "characterRegex": "[0-9:]",
-          "name": "MFONT_62",
-          "file": "fonts/Swiss 721 Narrow Bold SWA.ttf"
-        },
-        {
-          "type": "font",
-          "targetPlatforms": null,
           "characterRegex": "[0-9A-Za-z ]",
           "name": "MFONT_22",
-          "file": "fonts/Maax-Medium.ttf"
-        },
-        {
-          "type": "font",
-          "targetPlatforms": null,
-          "characterRegex": "[0-9A-Za-z ]",
-          "name": "MFONT_20",
           "file": "fonts/Maax-Medium.ttf"
         },
         {
@@ -48,23 +34,21 @@
       ]
     },
     "projectType": "native",
-    "uuid": "58e2c616-0d6a-4a59-80e0-b30e008affd2",
+    "uuid": "f884bc0b-a2ac-4178-ab74-945c5653ea85",
     "messageKeys": {},
     "enableMultiJS": false,
-    "displayName": "SleepyTime",
+    "displayName": "Sleepy Z",
     "watchapp": {
       "onlyShownOnCommunication": false,
       "hiddenApp": false,
       "watchface": true
     },
     "targetPlatforms": [
-      "aplite",
-      "basalt",
       "chalk"
     ],
     "capabilities": [
       ""
     ]
   },
-  "name": "SleepyTime"
+  "name": "Sleepy Z"
 }

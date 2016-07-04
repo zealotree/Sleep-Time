@@ -55,6 +55,7 @@ static void tick_handler(struct tm *tick_time, TimeUnits changed) {
     strftime(s_buffer, sizeof(s_buffer), clock_is_24h_style() ?
                                             // "%H:%M" : "%I:%M", tick_time);
                                             "%k:%M" : "%l:%M", tick_time);
+
     if (clock_is_24h_style()) {
       // text_layer_set_text(s_time_layer, "23:59");
       text_layer_set_text(s_time_layer, s_buffer+((' ' == s_buffer[0])?1:0));
@@ -65,8 +66,8 @@ static void tick_handler(struct tm *tick_time, TimeUnits changed) {
     } else {
       // text_layer_set_text(s_time_layer, "23:59");
       text_layer_set_text(s_time_layer, s_buffer+((' ' == s_buffer[0])?1:0));
-      text_layer_set_font(ap_layer, extra_font);
-      strftime(a_buffer, sizeof(a_buffer), "W%V D%j", tick_time);
+      text_layer_set_font(ap_layer, date_font);
+      strftime(a_buffer, sizeof(a_buffer), "%p", tick_time);
       text_layer_set_text(ap_layer, a_buffer);
       layer_set_hidden(text_layer_get_layer(ap_layer), false);
       // text_layer_set_font(ap_layer, date_font);
@@ -108,10 +109,10 @@ static void canvas_update_proc(Layer *layer, GContext *ctx) {
   } else if (state.charge_percent > 20 && state.charge_percent <= 40) {
     graphics_context_set_fill_color(ctx, PBL_IF_COLOR_ELSE(GColorMelon, GColorWhite));    
     graphics_context_set_fill_color(ctx, PBL_IF_COLOR_ELSE(GColorMelon, GColorWhite));    
-  } else if (state.charge_percent > 40 && state.charge_percent <= 70) {
+  } else if (state.charge_percent > 40 && state.charge_percent <= 50) {
     graphics_context_set_fill_color(ctx, PBL_IF_COLOR_ELSE(GColorYellow, GColorWhite));    
     graphics_context_set_fill_color(ctx, PBL_IF_COLOR_ELSE(GColorYellow, GColorWhite));
-  } else if (state.charge_percent > 70 && state.charge_percent <= 100) {
+  } else if (state.charge_percent > 50 && state.charge_percent <= 100) {
     graphics_context_set_fill_color(ctx, PBL_IF_COLOR_ELSE(GColorMediumAquamarine, GColorWhite));    
     graphics_context_set_fill_color(ctx, PBL_IF_COLOR_ELSE(GColorMediumAquamarine, GColorWhite));    
   }
@@ -139,23 +140,11 @@ static void main_window_load(Window *window) {
   layer_add_child(window_get_root_layer(window), s_canvas_layer);
   #endif
   
-  time_font = fonts_load_custom_font(
-                        PBL_IF_ROUND_ELSE(
-                        	resource_get_handle(RESOURCE_ID_MFONT_66),
-                        	resource_get_handle(RESOURCE_ID_MFONT_62)
-                        ));
+  time_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_MFONT_66));
   
-  date_font = fonts_load_custom_font(
-                        PBL_IF_ROUND_ELSE(
-                        	resource_get_handle(RESOURCE_ID_MFONT_22),
-                        	resource_get_handle(RESOURCE_ID_MFONT_20)
-                        ));
+  date_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_MFONT_22));
 
-  extra_font = fonts_load_custom_font(
-                        PBL_IF_ROUND_ELSE(
-                        	resource_get_handle(RESOURCE_ID_MFONT_18),
-                        	resource_get_handle(RESOURCE_ID_MFONT_18)
-                        ));
+  extra_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_MFONT_18));
 
   s_time_layer = text_layer_create(
         GRect(0, PBL_IF_ROUND_ELSE(37, 42), 
