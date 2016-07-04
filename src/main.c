@@ -10,7 +10,6 @@ char s_buffer[] = "00:00";
 char date_buffer[] = "December 31";
 char day_buffer[] = "Wednesday AM";
 char a_buffer[] = "W53 D365";
-static int32_t angle_end = DEG_TO_TRIGANGLE(0);
 
 static void update_time() {
     time_t temp = time(NULL);
@@ -28,8 +27,8 @@ static void update_time() {
     } else {
       // text_layer_set_text(s_time_layer, "23:59");
       text_layer_set_text(s_time_layer, s_buffer+((' ' == s_buffer[0])?1:0));
-      text_layer_set_font(ap_layer, extra_font);
-      strftime(a_buffer, sizeof(a_buffer), "W%V D%j", tick_time);
+      text_layer_set_font(ap_layer, date_font);
+      strftime(a_buffer, sizeof(a_buffer), "%p", tick_time);
       text_layer_set_text(ap_layer, a_buffer);
       layer_set_hidden(text_layer_get_layer(ap_layer), false);
       // text_layer_set_font(ap_layer, date_font);
@@ -140,14 +139,14 @@ static void main_window_load(Window *window) {
   layer_add_child(window_get_root_layer(window), s_canvas_layer);
   #endif
   
-  time_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_MFONT_66));
+  time_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_MFONT_64));
   
   date_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_MFONT_22));
 
   extra_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_MFONT_18));
 
   s_time_layer = text_layer_create(
-        GRect(0, PBL_IF_ROUND_ELSE(37, 42), 
+        GRect(0, PBL_IF_ROUND_ELSE(38, 42), 
                 PBL_IF_ROUND_ELSE(bounds.size.w, bounds.size.w), 72));
   s_date_layer = text_layer_create(
         GRect(0, PBL_IF_ROUND_ELSE(107, 111), 

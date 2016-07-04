@@ -1,5 +1,5 @@
 {
-  "version": "1.00.0",
+  "version": "1.01.0",
   "author": "Zealotree",
   "private": true,
   "dependencies": {},
@@ -14,8 +14,8 @@
           "type": "font",
           "targetPlatforms": null,
           "characterRegex": "[0-9:]",
-          "name": "MFONT_66",
-          "file": "fonts/Swiss 721 Narrow Bold SWA.ttf"
+          "name": "MFONT_64",
+          "file": "fonts/ArchivoNarrow-Bold.ttf"
         },
         {
           "type": "font",
