@@ -217,7 +217,7 @@ static void show_time() {
 
 void load_agents() {
   tick_timer_service_subscribe(MINUTE_UNIT | DAY_UNIT, tick_handler); 
-  light_enable_interaction();
+  // light_enable_interaction();
   APP_LOG(APP_LOG_LEVEL_DEBUG, "Switching back to empty in 8 seconds");
   AppTimer *updateTimer = app_timer_register(8000, 
           (AppTimerCallback) switch_to_empty, NULL);
