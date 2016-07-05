@@ -6,7 +6,7 @@ static Layer *s_canvas_layer;
 #endif
 static TextLayer *s_time_layer, *s_date_layer, *s_day_layer, *ap_layer;
 static GFont time_font, date_font, extra_font;
-static GDrawCommandImage *bt_icon;
+static GDrawCommandImage *bt_icon, *dc_icon;
 char s_buffer[] = "00:00";
 char date_buffer[] = "December 31";
 char day_buffer[] = "Wednesday AM";
@@ -57,13 +57,47 @@ static void update_time() {
     }
     // layer_set_hidden(text_layer_get_layer(s_time_layer), false);
 
-    strftime(date_buffer, sizeof(date_buffer), "%B %d", tick_time);
-    strftime(day_buffer, sizeof(day_buffer), clock_is_24h_style() ?"%A" : "%A", tick_time);
+    char *sys_locale = setlocale(LC_ALL, "");
+    if (strcmp("fr_FR", sys_locale) == 0) {
+      if (tick_time->tm_mday == 1) {
+        strftime(date_buffer, sizeof(date_buffer), "%eer %B", tick_time);
+      } else {
+        strftime(date_buffer, sizeof(date_buffer), "%e %B", tick_time);
+      }
+    } else if (strcmp("es_ES", sys_locale) == 0) {
+      if (tick_time->tm_mday == 1) {
+        strftime(date_buffer, sizeof(date_buffer), "%e de %B", tick_time);
+      } else {
+        strftime(date_buffer, sizeof(date_buffer), "%d de %b", tick_time);
+      }
+    } else if (strcmp("pt_PT", sys_locale) == 0) {
+      if (tick_time->tm_mday == 1) {
+        strftime(date_buffer, sizeof(date_buffer), "%e %B", tick_time);
+      } else {
+        strftime(date_buffer, sizeof(date_buffer), "%d de %b", tick_time);
+      }    
+    } else if (strcmp("de_DE", sys_locale) == 0) {
+      if (tick_time->tm_mday == 1) {
+        strftime(date_buffer, sizeof(date_buffer), "%e. %B", tick_time);
+      } else {
+        strftime(date_buffer, sizeof(date_buffer), "%e. %B", tick_time);
+      }
+    } else if (strcmp("it_IT", sys_locale) == 0) {
+      if (tick_time->tm_mday == 1) {
+        strftime(date_buffer, sizeof(date_buffer), "%e %B", tick_time);
+      } else {
+        strftime(date_buffer, sizeof(date_buffer), "%e %B", tick_time);
+      } 
+    } else {
+      strftime(date_buffer, sizeof(date_buffer), "%B %d", tick_time);
+    }
+    strftime(day_buffer, sizeof(day_buffer), "%A", tick_time);
     text_layer_set_text(s_date_layer, date_buffer);
     text_layer_set_text(s_day_layer, day_buffer);  
     // layer_set_hidden(text_layer_get_layer(s_date_layer), false);
     // layer_set_hidden(text_layer_get_layer(s_day_layer), false);
     show_elements();
+
 }
 
 static void tick_handler(struct tm *tick_time, TimeUnits changed) {
@@ -101,8 +135,41 @@ static void tick_handler(struct tm *tick_time, TimeUnits changed) {
 
 
   if (DAY_UNIT & changed) {
-    strftime(date_buffer, sizeof(date_buffer), "%B %d", tick_time);
-    strftime(day_buffer, sizeof(day_buffer), clock_is_24h_style() ?"%A" : "%A", tick_time);
+    char *sys_locale = setlocale(LC_ALL, "");
+    if (strcmp("fr_FR", sys_locale) == 0) {
+      if (tick_time->tm_mday == 1) {
+        strftime(date_buffer, sizeof(date_buffer), "%eer %B", tick_time);
+      } else {
+        strftime(date_buffer, sizeof(date_buffer), "%e %B", tick_time);
+      }
+    } else if (strcmp("es_ES", sys_locale) == 0) {
+      if (tick_time->tm_mday == 1) {
+        strftime(date_buffer, sizeof(date_buffer), "%e de %B", tick_time);
+      } else {
+        strftime(date_buffer, sizeof(date_buffer), "%d de %b", tick_time);
+      }
+    } else if (strcmp("pt_PT", sys_locale) == 0) {
+      if (tick_time->tm_mday == 1) {
+        strftime(date_buffer, sizeof(date_buffer), "%e %B", tick_time);
+      } else {
+        strftime(date_buffer, sizeof(date_buffer), "%d de %b", tick_time);
+      }    
+    } else if (strcmp("de_DE", sys_locale) == 0) {
+      if (tick_time->tm_mday == 1) {
+        strftime(date_buffer, sizeof(date_buffer), "%e. %B", tick_time);
+      } else {
+        strftime(date_buffer, sizeof(date_buffer), "%e. %B", tick_time);
+      }
+    } else if (strcmp("it_IT", sys_locale) == 0) {
+      if (tick_time->tm_mday == 1) {
+        strftime(date_buffer, sizeof(date_buffer), "%e %B", tick_time);
+      } else {
+        strftime(date_buffer, sizeof(date_buffer), "%e %B", tick_time);
+      } 
+    } else {
+      strftime(date_buffer, sizeof(date_buffer), "%B %d", tick_time);
+    }
+    strftime(day_buffer, sizeof(day_buffer), "%A", tick_time);
     text_layer_set_text(s_date_layer, date_buffer);
     text_layer_set_text(s_day_layer, day_buffer);  
     // layer_set_hidden(text_layer_get_layer(s_date_layer), false);
@@ -150,6 +217,8 @@ static void canvas_update_proc(Layer *layer, GContext *ctx) {
   GPoint origin = GPoint(80, 12);
 
   if (! connected) {
+    gdraw_command_image_draw(ctx, dc_icon, origin);
+  } else {
     gdraw_command_image_draw(ctx, bt_icon, origin);
   }
 
@@ -171,6 +240,7 @@ static void main_window_load(Window *window) {
   #endif
   
   bt_icon = gdraw_command_image_create_with_resource(RESOURCE_ID_BT);
+  dc_icon = gdraw_command_image_create_with_resource(RESOURCE_ID_DC);
 
   time_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_MFONT_64));
   
@@ -182,14 +252,14 @@ static void main_window_load(Window *window) {
         GRect(0, PBL_IF_ROUND_ELSE(43, 42), 
                 PBL_IF_ROUND_ELSE(bounds.size.w, bounds.size.w), 72));
   s_date_layer = text_layer_create(
-        GRect(0, PBL_IF_ROUND_ELSE(109, 111), 
+        GRect(0, PBL_IF_ROUND_ELSE(110, 111), 
                 PBL_IF_ROUND_ELSE(bounds.size.w, bounds.size.w), 26));
   s_day_layer = text_layer_create(
-        GRect(PBL_IF_ROUND_ELSE(1, 0), PBL_IF_ROUND_ELSE(33, 28), 
+        GRect(PBL_IF_ROUND_ELSE(1, 0), PBL_IF_ROUND_ELSE(32, 28), 
                 PBL_IF_ROUND_ELSE(bounds.size.w, bounds.size.w), 26));
 
   ap_layer = text_layer_create(
-        GRect(PBL_IF_ROUND_ELSE(0, 0), PBL_IF_ROUND_ELSE(135, 120), 
+        GRect(PBL_IF_ROUND_ELSE(0, 0), PBL_IF_ROUND_ELSE(136, 120), 
                 PBL_IF_ROUND_ELSE(bounds.size.w, bounds.size.w), 26));
 
   text_layer_set_background_color(s_time_layer, GColorClear);
@@ -266,6 +336,7 @@ static void accel_tap_handler(AccelAxisType axis, int32_t direction) {
 
 
 void handle_init(void) {
+  setlocale(LC_ALL, "");
   main_window = window_create();
   empty_window = window_create();
   
