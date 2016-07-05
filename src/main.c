@@ -6,12 +6,31 @@ static Layer *s_canvas_layer;
 #endif
 static TextLayer *s_time_layer, *s_date_layer, *s_day_layer, *ap_layer;
 static GFont time_font, date_font, extra_font;
+static GDrawCommandImage *bt_icon;
 char s_buffer[] = "00:00";
 char date_buffer[] = "December 31";
 char day_buffer[] = "Wednesday AM";
 char a_buffer[] = "W53 D365";
 
+static void show_elements(){
+  layer_set_hidden(text_layer_get_layer(s_time_layer), false);
+  layer_set_hidden(text_layer_get_layer(s_date_layer), false);
+  layer_set_hidden(text_layer_get_layer(s_day_layer), false);
+  layer_set_hidden(text_layer_get_layer(ap_layer), false);
+  layer_set_hidden(s_canvas_layer, false);
+}
+
+static void hide_elements() {
+  layer_set_hidden(text_layer_get_layer(s_time_layer), true);
+  layer_set_hidden(text_layer_get_layer(s_date_layer), true);
+  layer_set_hidden(text_layer_get_layer(s_day_layer), true);
+  layer_set_hidden(text_layer_get_layer(ap_layer), true);
+  layer_set_hidden(s_canvas_layer, true);
+}
+
 static void update_time() {
+    APP_LOG(APP_LOG_LEVEL_DEBUG, "Update  time");
+
     time_t temp = time(NULL);
     struct tm *tick_time = localtime(&temp);
     strftime(s_buffer, sizeof(s_buffer), clock_is_24h_style() ?
@@ -30,27 +49,30 @@ static void update_time() {
       text_layer_set_font(ap_layer, date_font);
       strftime(a_buffer, sizeof(a_buffer), "%p", tick_time);
       text_layer_set_text(ap_layer, a_buffer);
-      layer_set_hidden(text_layer_get_layer(ap_layer), false);
+      // layer_set_hidden(text_layer_get_layer(ap_layer), false);
       // text_layer_set_font(ap_layer, date_font);
       // strftime(a_buffer, sizeof(a_buffer), "%p", tick_time);
       // text_layer_set_text(ap_layer, a_buffer);
       // layer_set_hidden(text_layer_get_layer(ap_layer), false);
     }
-    layer_set_hidden(text_layer_get_layer(s_time_layer), false);
+    // layer_set_hidden(text_layer_get_layer(s_time_layer), false);
 
     strftime(date_buffer, sizeof(date_buffer), "%B %d", tick_time);
     strftime(day_buffer, sizeof(day_buffer), clock_is_24h_style() ?"%A" : "%A", tick_time);
     text_layer_set_text(s_date_layer, date_buffer);
     text_layer_set_text(s_day_layer, day_buffer);  
-    layer_set_hidden(text_layer_get_layer(s_date_layer), false);
-    layer_set_hidden(text_layer_get_layer(s_day_layer), false);
+    // layer_set_hidden(text_layer_get_layer(s_date_layer), false);
+    // layer_set_hidden(text_layer_get_layer(s_day_layer), false);
+    show_elements();
 }
 
 static void tick_handler(struct tm *tick_time, TimeUnits changed) {
+
   // time_t temp = time(NULL);
   // struct tm *tick_time = localtime(&temp);
 
-  if (MINUTE_UNIT) {
+  if (MINUTE_UNIT & changed) {
+    APP_LOG(APP_LOG_LEVEL_DEBUG, "Minute changed");
     strftime(s_buffer, sizeof(s_buffer), clock_is_24h_style() ?
                                             // "%H:%M" : "%I:%M", tick_time);
                                             "%k:%M" : "%l:%M", tick_time);
@@ -68,28 +90,30 @@ static void tick_handler(struct tm *tick_time, TimeUnits changed) {
       text_layer_set_font(ap_layer, date_font);
       strftime(a_buffer, sizeof(a_buffer), "%p", tick_time);
       text_layer_set_text(ap_layer, a_buffer);
-      layer_set_hidden(text_layer_get_layer(ap_layer), false);
+      // layer_set_hidden(text_layer_get_layer(ap_layer), false);
       // text_layer_set_font(ap_layer, date_font);
       // strftime(a_buffer, sizeof(a_buffer), "%p", tick_time);
       // text_layer_set_text(ap_layer, a_buffer);
       // layer_set_hidden(text_layer_get_layer(ap_layer), false);
     }
-    layer_set_hidden(text_layer_get_layer(s_time_layer), false);
+    // layer_set_hidden(text_layer_get_layer(s_time_layer), false);
   }
 
 
-  if (DAY_UNIT) {
+  if (DAY_UNIT & changed) {
     strftime(date_buffer, sizeof(date_buffer), "%B %d", tick_time);
     strftime(day_buffer, sizeof(day_buffer), clock_is_24h_style() ?"%A" : "%A", tick_time);
     text_layer_set_text(s_date_layer, date_buffer);
     text_layer_set_text(s_day_layer, day_buffer);  
-    layer_set_hidden(text_layer_get_layer(s_date_layer), false);
-    layer_set_hidden(text_layer_get_layer(s_day_layer), false);
+    // layer_set_hidden(text_layer_get_layer(s_date_layer), false);
+    // layer_set_hidden(text_layer_get_layer(s_day_layer), false);
   }
 }
 
 static void canvas_update_proc(Layer *layer, GContext *ctx) {
   // Custom drawing happens here!
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Update batt");
+
   GRect rect_bounds = layer_get_bounds(layer);
   int32_t angle_start = DEG_TO_TRIGANGLE(0);
   int32_t full = DEG_TO_TRIGANGLE(360);
@@ -106,14 +130,14 @@ static void canvas_update_proc(Layer *layer, GContext *ctx) {
     graphics_context_set_fill_color(ctx, PBL_IF_COLOR_ELSE(GColorRed, GColorWhite));    
     graphics_context_set_fill_color(ctx, PBL_IF_COLOR_ELSE(GColorRed, GColorWhite));    
   } else if (state.charge_percent > 20 && state.charge_percent <= 40) {
-    graphics_context_set_fill_color(ctx, PBL_IF_COLOR_ELSE(GColorMelon, GColorWhite));    
-    graphics_context_set_fill_color(ctx, PBL_IF_COLOR_ELSE(GColorMelon, GColorWhite));    
+    graphics_context_set_fill_color(ctx, PBL_IF_COLOR_ELSE(GColorDarkCandyAppleRed, GColorWhite));    
+    graphics_context_set_fill_color(ctx, PBL_IF_COLOR_ELSE(GColorDarkCandyAppleRed, GColorWhite));    
   } else if (state.charge_percent > 40 && state.charge_percent <= 50) {
-    graphics_context_set_fill_color(ctx, PBL_IF_COLOR_ELSE(GColorYellow, GColorWhite));    
-    graphics_context_set_fill_color(ctx, PBL_IF_COLOR_ELSE(GColorYellow, GColorWhite));
+    graphics_context_set_fill_color(ctx, PBL_IF_COLOR_ELSE(GColorChromeYellow, GColorWhite));    
+    graphics_context_set_fill_color(ctx, PBL_IF_COLOR_ELSE(GColorChromeYellow, GColorWhite));
   } else if (state.charge_percent > 50 && state.charge_percent <= 100) {
-    graphics_context_set_fill_color(ctx, PBL_IF_COLOR_ELSE(GColorMediumAquamarine, GColorWhite));    
-    graphics_context_set_fill_color(ctx, PBL_IF_COLOR_ELSE(GColorMediumAquamarine, GColorWhite));    
+    graphics_context_set_fill_color(ctx, PBL_IF_COLOR_ELSE(GColorMalachite, GColorWhite));    
+    graphics_context_set_fill_color(ctx, PBL_IF_COLOR_ELSE(GColorMalachite, GColorWhite));    
   }
 
 
@@ -121,7 +145,13 @@ static void canvas_update_proc(Layer *layer, GContext *ctx) {
   graphics_fill_radial(ctx, rect_bounds, GOvalScaleModeFitCircle, 7, angle_start, 
                                                                     angle_end);
 
+  bool connected = connection_service_peek_pebble_app_connection();
 
+  GPoint origin = GPoint(80, 12);
+
+  if (! connected) {
+    gdraw_command_image_draw(ctx, bt_icon, origin);
+  }
 
 }
 
@@ -137,8 +167,11 @@ static void main_window_load(Window *window) {
   s_canvas_layer = layer_create(bounds);
   layer_set_update_proc(s_canvas_layer, canvas_update_proc);
   layer_add_child(window_get_root_layer(window), s_canvas_layer);
+  layer_set_hidden(s_canvas_layer, true);
   #endif
   
+  bt_icon = gdraw_command_image_create_with_resource(RESOURCE_ID_BT);
+
   time_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_MFONT_64));
   
   date_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_MFONT_22));
@@ -146,17 +179,17 @@ static void main_window_load(Window *window) {
   extra_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_MFONT_18));
 
   s_time_layer = text_layer_create(
-        GRect(0, PBL_IF_ROUND_ELSE(38, 42), 
+        GRect(0, PBL_IF_ROUND_ELSE(43, 42), 
                 PBL_IF_ROUND_ELSE(bounds.size.w, bounds.size.w), 72));
   s_date_layer = text_layer_create(
-        GRect(0, PBL_IF_ROUND_ELSE(107, 111), 
+        GRect(0, PBL_IF_ROUND_ELSE(109, 111), 
                 PBL_IF_ROUND_ELSE(bounds.size.w, bounds.size.w), 26));
   s_day_layer = text_layer_create(
-        GRect(PBL_IF_ROUND_ELSE(1, 0), PBL_IF_ROUND_ELSE(24, 28), 
+        GRect(PBL_IF_ROUND_ELSE(1, 0), PBL_IF_ROUND_ELSE(33, 28), 
                 PBL_IF_ROUND_ELSE(bounds.size.w, bounds.size.w), 26));
 
   ap_layer = text_layer_create(
-        GRect(PBL_IF_ROUND_ELSE(0, 0), PBL_IF_ROUND_ELSE(133, 120), 
+        GRect(PBL_IF_ROUND_ELSE(0, 0), PBL_IF_ROUND_ELSE(135, 120), 
                 PBL_IF_ROUND_ELSE(bounds.size.w, bounds.size.w), 26));
 
   text_layer_set_background_color(s_time_layer, GColorClear);
@@ -186,21 +219,20 @@ static void main_window_load(Window *window) {
   layer_add_child(window_layer, text_layer_get_layer(s_day_layer));
   layer_add_child(window_layer, text_layer_get_layer(ap_layer));
 
-  layer_set_hidden(text_layer_get_layer(s_time_layer), true);
-  layer_set_hidden(text_layer_get_layer(s_day_layer), true);
-  layer_set_hidden(text_layer_get_layer(s_date_layer), true);
-  layer_set_hidden(text_layer_get_layer(ap_layer), true);
+  hide_elements(); 
+
+  // layer_set_hidden(text_layer_get_layer(s_time_layer), true);
+  // layer_set_hidden(text_layer_get_layer(s_day_layer), true);
+  // layer_set_hidden(text_layer_get_layer(s_date_layer), true);
+  // layer_set_hidden(text_layer_get_layer(ap_layer), true);
 
   update_time();
+  if (s_canvas_layer) {
+    layer_mark_dirty(s_canvas_layer);
+  }
 }
 
-static void hide_elements() {
-  layer_set_hidden(text_layer_get_layer(s_time_layer), true);
-  layer_set_hidden(text_layer_get_layer(s_date_layer), true);
-  layer_set_hidden(text_layer_get_layer(s_day_layer), true);
-  layer_set_hidden(text_layer_get_layer(ap_layer), true);
-  text_layer_set_text(s_time_layer, "");
-}
+
 
 static void main_window_unload(Window *window) {
   hide_elements();
@@ -216,8 +248,9 @@ static void show_time() {
 }
 
 void load_agents() {
+  update_time();
   tick_timer_service_subscribe(MINUTE_UNIT | DAY_UNIT, tick_handler); 
-  // light_enable_interaction();
+  light_enable_interaction();
   APP_LOG(APP_LOG_LEVEL_DEBUG, "Switching back to empty in 8 seconds");
   AppTimer *updateTimer = app_timer_register(8000, 
           (AppTimerCallback) switch_to_empty, NULL);

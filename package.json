@@ -1,5 +1,5 @@
 {
-  "version": "1.02.0",
+  "version": "1.03.0",
   "author": "Zealotree",
   "private": true,
   "dependencies": {},
@@ -30,6 +30,11 @@
           "characterRegex": "[0-9A-Za-z ]",
           "name": "MFONT_18",
           "file": "fonts/Maax-Medium.ttf"
+        },
+        {
+          "type": "raw",
+          "name": "BT",
+          "file": "images/dc3.pdc"
         }
       ]
     },
