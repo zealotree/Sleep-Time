@@ -7,6 +7,20 @@ char s_buffer[] = "00:00";
 char date_buffer[] = "December 31";
 char day_buffer[] = "Wednesday AM";
 
+
+static void hide_elements() {
+  layer_set_hidden(text_layer_get_layer(s_time_layer), true);
+  layer_set_hidden(text_layer_get_layer(s_date_layer), true);
+  layer_set_hidden(text_layer_get_layer(s_day_layer), true);
+}
+
+static void show_elements() {
+  layer_set_hidden(text_layer_get_layer(s_time_layer), false);
+  layer_set_hidden(text_layer_get_layer(s_date_layer), false);
+  layer_set_hidden(text_layer_get_layer(s_day_layer), false);
+}
+
+
 static void update_time() {
 
   time_t temp = time(NULL);
@@ -28,13 +42,14 @@ static void update_time() {
   }
   text_layer_set_text(s_date_layer, date_buffer);
   text_layer_set_text(s_day_layer, day_buffer);
+  show_elements();
 }
 
 static void tick_handler(struct tm *tick_time, TimeUnits changed) {
   // time_t temp = time(NULL);
   // struct tm *tick_time = localtime(&temp);
 
-  if (MINUTE_UNIT) {
+  if (MINUTE_UNIT & changed) {
     strftime(s_buffer, sizeof(s_buffer), clock_is_24h_style() ?
                                             // "%H:%M" : "%I:%M", tick_time);
                                             "%k:%M" : "%l:%M", tick_time);
@@ -48,7 +63,7 @@ static void tick_handler(struct tm *tick_time, TimeUnits changed) {
   }
 
 
-  if (DAY_UNIT) {
+  if (DAY_UNIT & changed) {
     strftime(date_buffer, sizeof(date_buffer), "%B %d", tick_time);
     strftime(day_buffer, sizeof(day_buffer), clock_is_24h_style() ?"%A" : "%A", tick_time);
     text_layer_set_text(s_date_layer, date_buffer);
@@ -109,15 +124,8 @@ static void main_window_load(Window *window) {
   layer_add_child(window_layer, text_layer_get_layer(s_date_layer));
   layer_add_child(window_layer, text_layer_get_layer(s_day_layer));
 
-  layer_set_hidden(text_layer_get_layer(s_time_layer), true);
-  layer_set_hidden(text_layer_get_layer(s_day_layer), true);
-  layer_set_hidden(text_layer_get_layer(s_date_layer), true);
-}
-
-static void hide_elements() {
-  layer_set_hidden(text_layer_get_layer(s_time_layer), true);
-  layer_set_hidden(text_layer_get_layer(s_date_layer), true);
-  layer_set_hidden(text_layer_get_layer(s_day_layer), true);
+  hide_elements();
+  update_time();
 }
 
 static void main_window_unload(Window *window) {
@@ -134,6 +142,7 @@ static void show_time() {
 }
 
 void load_agents() {
+  update_time();
   tick_timer_service_subscribe(MINUTE_UNIT | DAY_UNIT, tick_handler); 
   layer_set_hidden(text_layer_get_layer(s_time_layer), false);
   layer_set_hidden(text_layer_get_layer(s_date_layer), false);
