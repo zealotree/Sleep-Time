@@ -214,11 +214,12 @@ static void canvas_update_proc(Layer *layer, GContext *ctx) {
 
   bool connected = connection_service_peek_pebble_app_connection();
 
-  GPoint origin = GPoint(80, 12);
 
   if (! connected) {
+    GPoint origin = GPoint(80, 14);
     gdraw_command_image_draw(ctx, dc_icon, origin);
   } else {
+    GPoint origin = GPoint(80, 12);
     gdraw_command_image_draw(ctx, bt_icon, origin);
   }
 
